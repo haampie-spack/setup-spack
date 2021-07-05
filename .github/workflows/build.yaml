@@ -33,6 +33,7 @@ jobs:
     - name: Install
       run: |
         SPACK_OPTIMIZATION_FLAGS=-Os ./spack/bin/spack -e . install -j3
+        ls ~/.setup-spack/view/bin
     - uses: actions/upload-artifact@v2
       with:
         name: spack-lockfile-${{ matrix.os }}
@@ -66,6 +67,7 @@ jobs:
         ./spack/bin/spack -e . gc -y
         ./spack/bin/spack -e . clean -a
         ./spack/bin/spack -e . env view regenerate
+        ls ~/.setup-spack/view/bin
     - name: Bundling
       run: |
         TAR=tar
