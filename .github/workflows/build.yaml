@@ -33,7 +33,6 @@ jobs:
     - name: Install
       run: |
         SPACK_OPTIMIZATION_FLAGS=-Os ./spack/bin/spack -e . install -j3
-        ls ~/.setup-spack/view/bin
     - uses: actions/upload-artifact@v2
       with:
         name: spack-lockfile-${{ matrix.os }}
@@ -67,12 +66,11 @@ jobs:
         ./spack/bin/spack -e . gc -y
         ./spack/bin/spack -e . clean -a
         ./spack/bin/spack -e . env view regenerate
-        ls ~/.setup-spack/view/bin
     - name: Bundling
       run: |
         TAR=tar
         if [ "$RUNNER_OS" == macOS ]; then TAR=gtar; fi
-        $TAR --use-compress-program="zstd -T0" -cf ${{ matrix.os }}.tar.zst -C ~/ .setup-spack
+        COPYFILE_DISABLE=1 $TAR --use-compress-program="zstd -T0" -cf ${{ matrix.os }}.tar.zst -C ~/ .setup-spack
     - name: Upload release assets
       run: |
         name=${{ matrix.os }}.tar.zst
