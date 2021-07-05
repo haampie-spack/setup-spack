@@ -68,7 +68,9 @@ jobs:
         ./spack/bin/spack -e . env view regenerate
     - name: Bundling
       run: |
-        tar --use-compress-program="zstd -T0" -cf ${{ matrix.os }}.tar.zst -C ~/ .setup-spack
+        TAR=tar
+        if [ "$RUNNER_OS" == macOS ]; then TAR=gtar; fi
+        $TAR --use-compress-program="zstd -T0" -cf ${{ matrix.os }}.tar.zst -C ~/ .setup-spack
     - name: Upload release assets
       run: |
         name=${{ matrix.os }}.tar.zst
