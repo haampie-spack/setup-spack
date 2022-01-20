@@ -1,1 +1,1 @@
-Setup spack
+Setup spack.
